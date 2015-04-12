@@ -1,8 +1,8 @@
 
 import stellar.base58
-import crypto
 
 #-------------------------------------------------------------------------------
+import crypto
 
 _STELLAR = 'gsphnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCr65jkm8oFqi1tuvAxyz'
 

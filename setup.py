@@ -9,18 +9,17 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 	long_description = f.read()
 
 # Get the version number
-execfile('stellar/version.py')
+execfile('rtxp/version.py')
 
 setup(
-	name='stellar-py',
+	name='rtxp-py',
 	version=__version__,
 	author='Johan Stén',
 	author_email='johan.sten@gmail.com',
-	packages=['stellar'],
-	scripts=['bin/stellar_keygen.py','bin/stellar_send.py'],
-	url='https://github.com/johansten/stellar-py',
+	packages=['rtxp'],
+	url='https://github.com/johansten/rtxp-py',
 	license='LICENSE.txt',
-	description='Python client library for Stellar',
+	description='Python client library for RTXP',
 	long_description=long_description,
 	classifiers =[
 		'Programming Language :: Python',

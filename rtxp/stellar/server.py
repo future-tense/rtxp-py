@@ -1,12 +1,12 @@
 
-import websocket
-from fee import Fee
-
 import thread
-import simplejson as json
 import threading
 
+import websocket
+import simplejson as json
 from aplus import Promise
+
+from fee import Fee
 
 #-------------------------------------------------------------------------------
 

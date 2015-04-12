@@ -1,6 +1,6 @@
-
 import unittest
-import stellar
+
+from rtxp import stellar
 
 
 class AmountTest(unittest.TestCase):

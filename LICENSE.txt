@@ -1,4 +1,4 @@
-Copyright (c) 2014, Johan Stén
+Copyright (c) 2014-2015, Johan Stén
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

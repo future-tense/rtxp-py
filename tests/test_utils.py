@@ -1,6 +1,6 @@
-
 import unittest
-from stellar import utils
+
+from rtxp.stellar import utils
 
 
 class UtilsTest(unittest.TestCase):

@@ -1,8 +1,10 @@
 
 import os
+
+import utils
+import address
 import crypto
 import serialize
-from stellar import utils, address
 
 
 def generate_keypair():

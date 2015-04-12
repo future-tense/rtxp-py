@@ -1,8 +1,8 @@
-
 import unittest
+
 from mock import MagicMock as Mock
 
-import stellar
+from rtxp import stellar
 
 
 class DummyPromise(object):

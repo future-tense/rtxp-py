@@ -1,6 +1,6 @@
-import unittest
 
-from rtxp.stellar import utils
+import unittest
+from rtxp.core import utils
 
 
 class UtilsTest(unittest.TestCase):

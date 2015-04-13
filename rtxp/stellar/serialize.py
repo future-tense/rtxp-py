@@ -1,8 +1,8 @@
 
 from decimal import Decimal
 
+from rtxp.core import utils
 from address import account_from_human
-from utils import *
 
 
 #-------------------------------------------------------------------------------
@@ -168,15 +168,15 @@ def serialize_pathset(pathset):
 
 
 def serialize_int16(value):
-	return int_to_bytes(value, size=2)
+	return utils.int_to_bytes(value, size=2)
 
 
 def serialize_int32(value):
-	return int_to_bytes(value, size=4)
+	return utils.int_to_bytes(value, size=4)
 
 
 def serialize_int64(value):
-	return int_to_bytes(value, size=8)
+	return utils.int_to_bytes(value, size=8)
 
 
 def serialize_vl(value):

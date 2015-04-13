@@ -2,10 +2,10 @@
 import os
 
 from rtxp.core import crypto
+from rtxp.core import serialize
 from rtxp.core import utils
 
 import address
-import serialize
 
 
 def generate_keypair():
@@ -23,6 +23,8 @@ def generate_keypair():
 _HASH_TX_SIGN = 'STX\0'
 
 #-------------------------------------------------------------------------------
+
+serializer = serialize.Serializer('STR', address.account_from_human)
 
 
 def _get_signing_hash(blob):
@@ -43,9 +45,9 @@ def sign(tx_json, secret):
 	pubkey = crypto.get_public_key(seed)
 	tx_json['SigningPubKey'] = pubkey
 
-	tx_blob = serialize.serialize_json(tx_json)
+	tx_blob = serializer.serialize_json(tx_json)
 	signature = _sign_blob(tx_blob, seed)
 	tx_json['TxnSignature'] = signature
 
-	tx_blob = serialize.serialize_json(tx_json)
+	tx_blob = serializer.serialize_json(tx_json)
 	return utils.to_hex(tx_blob)

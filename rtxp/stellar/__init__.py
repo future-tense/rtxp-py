@@ -4,5 +4,5 @@ from local import (
 	sign
 )
 
-from remote import Remote
 from amount import Amount
+from remote import Remote

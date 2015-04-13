@@ -1,6 +1,7 @@
+
 import unittest
 
-import rtxp.stellar.base58 as base58
+from rtxp.core import base58
 
 
 _BITCOIN = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz'

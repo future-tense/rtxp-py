@@ -1,6 +1,6 @@
 
+from rtxp.core import base58
 from rtxp.core import crypto
-import stellar.base58
 
 #-------------------------------------------------------------------------------
 
@@ -12,17 +12,17 @@ _VER_ACCOUNT_PUBLIC	= chr(67)
 
 #-------------------------------------------------------------------------------
 
-base58 = stellar.base58.Base58(_STELLAR)
+b58 = base58.Base58(_STELLAR)
 
 #-------------------------------------------------------------------------------
 
 
 def to_human(version, data):
-	return base58.encode_check(version + data)
+	return b58.encode_check(version + data)
 
 
 def from_human(version, h):
-	seed = base58.decode_check(h)
+	seed = b58.decode_check(h)
 	if seed[0] != version:
 		raise TypeError
 

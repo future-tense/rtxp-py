@@ -1,6 +1,6 @@
 
-from rtxp.core import crypto
-from rtxp.core import utils
+import crypto
+import utils
 
 #	_RIPPLE  = 'rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz'
 #	_STELLAR = 'gsphnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCr65jkm8oFqi1tuvAxyz'

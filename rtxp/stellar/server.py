@@ -6,7 +6,7 @@ import websocket
 import simplejson as json
 from aplus import Promise
 
-from fee import Fee
+from rtxp.core.fee import Fee
 
 #-------------------------------------------------------------------------------
 

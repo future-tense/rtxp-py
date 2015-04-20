@@ -71,15 +71,11 @@ class Remote(rtxp.core.remote.Remote):
 		if not account:
 			account = signer.account_from_seed(secret)
 
-		def on_success(res):
-			seq, fee = res
-			tx_json = Transaction.account_merge(
+		def on_success(seq_fee):
+			return Transaction.account_merge(
 				account,
 				destination,
-				seq,
-				fee
+				*seq_fee
 			)
-			tx_blob = self.signer.sign(tx_json, secret, self.testnet)
-			return self.submit_transaction(tx_blob, async=True)
 
-		return self.__hl_command(account, on_success, async)
+		return self.__transaction(secret, account, on_success, async)

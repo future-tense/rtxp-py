@@ -11,6 +11,7 @@ class Remote(object):
 			url,
 			async=False,
 			callback=None,
+			testnet=False,
 			server=Server,
 			transaction=Transaction,
 			signer=None):
@@ -32,6 +33,7 @@ class Remote(object):
 		self.transaction = transaction
 		self.signer = signer
 		self.async = async
+		self.testnet = testnet
 
 	def __call_filtered(self, func, local):
 		""" call func with the filtered local dict as kwargs """
@@ -287,7 +289,7 @@ class Remote(object):
 				seq,
 				fee
 			)
-			tx_blob = self.signer.sign(tx_json, secret)
+			tx_blob = self.signer.sign(tx_json, secret, self.testnet)
 			return self.submit_transaction(tx_blob, async=True)
 
 		return self.__hl_command(account, on_success, async)
@@ -309,7 +311,7 @@ class Remote(object):
 				fee,
 				**kwargs
 			)
-			tx_blob = self.signer.sign(tx_json, secret)
+			tx_blob = self.signer.sign(tx_json, secret, self.testnet)
 			return self.submit_transaction(tx_blob, async=True)
 
 		return self.__hl_command(account, on_success, async)
@@ -331,7 +333,7 @@ class Remote(object):
 				fee,
 				**kwargs
 			)
-			tx_blob = self.signer.sign(tx_json, secret)
+			tx_blob = self.signer.sign(tx_json, secret, self.testnet)
 			return self.submit_transaction(tx_blob, async=True)
 
 		return self.__hl_command(account, on_success, async)
@@ -350,7 +352,7 @@ class Remote(object):
 				fee,
 				**kwargs
 			)
-			tx_blob = self.signer.sign(tx_json, secret)
+			tx_blob = self.signer.sign(tx_json, secret, self.testnet)
 			return self.submit_transaction(tx_blob, async=True)
 
 		return self.__hl_command(account, on_success, async)
@@ -369,7 +371,7 @@ class Remote(object):
 				seq,
 				fee
 			)
-			tx_blob = self.signer.sign(tx_json, secret)
+			tx_blob = self.signer.sign(tx_json, secret, self.testnet)
 			return self.submit_transaction(tx_blob, async=True)
 
 		return self.__hl_command(account, on_success, async)
@@ -389,9 +391,7 @@ class Remote(object):
 				fee,
 				**kwargs
 			)
-			tx_blob = self.signer.sign(tx_json, secret)
+			tx_blob = self.signer.sign(tx_json, secret, self.testnet)
 			return self.submit_transaction(tx_blob, async=True)
-#	#	#	print tx_blob
-#	#	#	return
 
 		return self.__hl_command(account, on_success, async)

@@ -10,10 +10,12 @@ from singletons import signer
 
 class Remote(rtxp.core.remote.Remote):
 
-	def __init__(self,
+	def __init__(
+			self,
 			url,
 			async=False,
 			callback=None,
+			testnet=False,
 			server=Server,
 			transaction=Transaction,
 			signer=signer
@@ -22,6 +24,7 @@ class Remote(rtxp.core.remote.Remote):
 			url,
 			async,
 			callback,
+			testnet,
 			server,
 			transaction,
 			signer
@@ -76,7 +79,7 @@ class Remote(rtxp.core.remote.Remote):
 				seq,
 				fee
 			)
-			tx_blob = signer.sign(tx_json, secret)
+			tx_blob = self.signer.sign(tx_json, secret, self.testnet)
 			return self.submit_transaction(tx_blob, async=True)
 
 		return self.__hl_command(account, on_success, async)

@@ -1,5 +1,5 @@
 
-import crypto
+import hashes
 import utils
 
 #	_RIPPLE  = 'rpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65jkm8oFqi1tuvAxyz'
@@ -23,7 +23,7 @@ def zero_padding(v):
 
 
 def four_byte_hash256(s):
-	return crypto.sha256hash(s)[0:4]
+	return hashes.sha256hash(s)[0:4]
 
 
 class Base58(object):

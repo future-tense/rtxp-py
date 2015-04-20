@@ -26,27 +26,22 @@ def create_amount(native):
 
 		@staticmethod
 		def from_json(amount):
-			if type(amount) == dict:
+			if type(amount) != dict:
+				return Amount(str(Decimal(amount) / _SCALE))
+			else:
 				assert 'value' in amount
 				assert 'currency' in amount
 				assert 'issuer' in amount
-
-				return Amount(
-					amount['value'],
-					amount['currency'],
-					amount['issuer']
-				)
-			else:
-				return Amount(str(Decimal(amount) / _SCALE))
+				return Amount(**amount)
 
 		def to_json(self):
-			if self.currency != 'STR':
+			if self.currency == native:
+				return str(int(Decimal(self.value) * _SCALE))
+			else:
 				return {
 					'value':	self.value,
 					'currency':	self.currency,
 					'issuer':	self.issuer
 				}
-			else:
-				return str(int(Decimal(self.value) * _SCALE))
 
 	return Amount

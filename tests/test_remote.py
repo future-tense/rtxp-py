@@ -1,5 +1,5 @@
-import unittest
 
+import unittest
 from mock import MagicMock as Mock
 
 from rtxp import stellar
@@ -35,8 +35,7 @@ class DummyPromise(object):
 class RemotePromiseTest(unittest.TestCase):
 
 	def setUp(self):
-		stellar.remote.Server = Mock
-		self.remote = stellar.Remote(None)
+		self.remote = stellar.Remote(None, server=Mock)
 		self.server = self.remote.server
 
 	def test_promise_ok(self):
@@ -61,8 +60,7 @@ class RemotePromiseTest(unittest.TestCase):
 class RemoteParamTest(unittest.TestCase):
 
 	def setUp(self):
-		stellar.remote.Server = Mock
-		self.remote = stellar.Remote(None)
+		self.remote = stellar.Remote(None, server=Mock)
 		self.server = self.remote.server
 
 	def test_cancel(self):

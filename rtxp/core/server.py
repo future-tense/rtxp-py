@@ -278,6 +278,15 @@ class Server(websocket.WebSocketApp):
 	def add_callback(self, tx_type, callback):
 		self.tx_callbacks[tx_type].append(callback)
 
+	def clear_subscriptions(self):
+
+		self.subscriptions = {
+			'streams':				[],
+			'accounts':				[],
+			'accounts_proposed':	[],
+			'books':				[]
+		}
+
 	def __resubscribe(self):
 
 		kwargs = {}

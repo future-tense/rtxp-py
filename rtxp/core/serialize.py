@@ -73,7 +73,7 @@ class Serializer(object):
 				blob += chr(field_id)
 
 			if type_id in self.serializer_dict:
-				blob += self.serializer_dict[type_id](value)
+				blob += self.serializer_dict[type_id](self, value)
 
 		return blob
 
@@ -100,9 +100,10 @@ class Serializer(object):
 		negative, value, exponent = self.parse_non_native_amount(amount)
 
 		hi = 1 << 31
-		if value and not negative:
-			hi |= 1 << 30
-		hi |= ((97 + exponent) & 0xff) << 22
+		if value:
+			if not negative:
+				hi |= 1 << 30
+			hi |= ((97 + exponent) & 0xff) << 22
 
 		value |= hi << 32
 		return self.serialize_int64(value)

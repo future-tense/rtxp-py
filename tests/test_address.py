@@ -1,6 +1,7 @@
+
 import unittest
 
-import rtxp.stellar.address as address
+from stellar import address
 
 
 MASTERKEY_SEED_BIN = 'DEDCE9CE67B451D852FD4E846FCDE31C4E48EB676DEE37FDC4832DF2167B62D2'.decode('hex')

@@ -119,6 +119,9 @@ class Transaction(object):
 			'SendMax',			#amount
 			'SourceTag',		#int
 			'Flags',			#int
+			'LastLedgerSequence',
+			'Memos',
+			'InvoiceID',
 		}
 
 		tx_json = {

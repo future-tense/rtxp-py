@@ -6,29 +6,36 @@ import utils
 #-------------------------------------------------------------------------------
 
 FIELD_MAP = {
-	'Account':			(8, 1),
-	'Amount':			(6, 1),
-	'ClearFlag':		(2, 34),
-	'Destination':		(8, 3),
-	'DestinationTag':	(2, 14),
-	'Fee':				(6, 8),
-	'Flags':			(2, 2),
-	'InflationDest':	(8, 9),				#stellar
-	'LimitAmount':		(6, 3),
-	'OfferSequence':	(2, 25),
-	'Paths':			(18, 1),
-	'RegularKey':		(8, 8),
-	'SendMax':			(6, 9),
-	'Sequence':			(2, 4),
-	'SetAuthKey':		(8, 10),			#stellar
-	'SetFlag':			(2, 33),
-	'SigningPubKey':	(7, 3),
-	'SourceTag':		(2, 3),
-	'TakerGets':		(6, 5),
-	'TakerPays':		(6, 4),
-	'TransactionType':	(1, 2),
-	'TransferRate':		(2, 11),
-	'TxnSignature':		(7, 4),
+	'Account':				(8, 1),
+	'Amount':				(6, 1),
+	'ClearFlag':			(2, 34),
+	'Destination':			(8, 3),
+	'DestinationTag':		(2, 14),
+	'Fee':					(6, 8),
+	'Flags':				(2, 2),
+	'InflationDest':		(8, 9),				#stellar
+	'InvoiceID':			(5, 17),
+	'LastLedgerSequence':	(2, 27),
+	'LimitAmount':			(6, 3),
+	'Memo':					(14, 10),
+	'MemoData':				(7, 13),
+	'MemoFormat':			(7, 14),
+	'Memos':				(15, 9),
+	'MemoType':				(7, 12),
+	'OfferSequence':		(2, 25),
+	'Paths':				(18, 1),
+	'RegularKey':			(8, 8),
+	'SendMax':				(6, 9),
+	'Sequence':				(2, 4),
+	'SetAuthKey':			(8, 10),			#stellar
+	'SetFlag':				(2, 33),
+	'SigningPubKey':		(7, 3),
+	'SourceTag':			(2, 3),
+	'TakerGets':			(6, 5),
+	'TakerPays':			(6, 4),
+	'TransactionType':		(1, 2),
+	'TransferRate':			(2, 11),
+	'TxnSignature':			(7, 4),
 }
 
 TRANSACTION_TYPES = {
@@ -50,6 +57,27 @@ class Serializer(object):
 		self.native_currency = native_currency
 		self.account_from_human = account_from_human
 
+	def serialize_kv_pair(self, key, value):
+
+		blob = ''
+		if key == 'TransactionType':
+			value = TRANSACTION_TYPES[value]
+
+		type_id, field_id = FIELD_MAP[key]
+		tag = ((type_id << 4 if type_id  < 16 else 0) |
+			   (field_id     if field_id < 16 else 0))
+		blob += chr(tag)
+
+		if type_id >= 16:
+			blob += chr(type_id)
+		if field_id >= 16:
+			blob += chr(field_id)
+
+		if type_id in self.serializer_dict:
+			blob += self.serializer_dict[type_id](self, value)
+
+		return blob
+
 	def serialize_json(self, tx_json):
 
 		def comparator(a, b):
@@ -57,23 +85,9 @@ class Serializer(object):
 
 		blob = ''
 		keys = sorted(tx_json.keys(), cmp=comparator)
-		for k in keys:
-			value = tx_json[k]
-			if k == 'TransactionType':
-				value = TRANSACTION_TYPES[value]
-
-			type_id, field_id = FIELD_MAP[k]
-			tag = ((type_id << 4 if type_id  < 16 else 0) |
-				   (field_id     if field_id < 16 else 0))
-			blob += chr(tag)
-
-			if type_id >= 16:
-				blob += chr(type_id)
-			if field_id >= 16:
-				blob += chr(field_id)
-
-			if type_id in self.serializer_dict:
-				blob += self.serializer_dict[type_id](self, value)
+		for key in keys:
+			value = tx_json[key]
+			blob += self.serialize_kv_pair(key, value)
 
 		return blob
 
@@ -145,8 +159,7 @@ class Serializer(object):
 		return blob
 
 	def serialize_account(self, value):
-		data = self.serialize_account_id(value)
-		return self.serialize_vl(data)
+		return chr(20) + self.serialize_account_id(value)
 
 	def serialize_path(self, path):
 
@@ -199,15 +212,48 @@ class Serializer(object):
 	def serialize_int64(self, value):
 		return utils.int_to_bytes(value, size=8)
 
+	def serialize_hash256(self, value):
+		return value.decode('hex')
+
 	def serialize_vl(self, value):
+		value = value.decode('hex')
 		return chr(len(value)) + value
+
+	def serialize_array(self, array):
+
+		blob = ''
+		for t in array:
+			key, value = t.items()[0]
+			blob += self.serialize_kv_pair(key, value)
+
+		blob += chr((15 << 4) | 1)
+
+		return blob
+
+	def serialize_object(self, tx_json):
+
+		def comparator(a, b):
+			return 1 if FIELD_MAP[a] > FIELD_MAP[b] else -1
+
+		blob = ''
+		keys = sorted(tx_json.keys(), cmp=comparator)
+		for key in keys:
+			value = tx_json[key]
+			blob += self.serialize_kv_pair(key, value)
+
+		blob += chr((14 << 4) | 1)
+
+		return blob
 
 	serializer_dict = {
 		1: serialize_int16,
 		2: serialize_int32,
+		5: serialize_hash256,
 		6: serialize_amount,
 		7: serialize_vl,
 		8: serialize_account,
+		14: serialize_object,
+		15:	serialize_array,
 		18: serialize_pathset,
 	}
 

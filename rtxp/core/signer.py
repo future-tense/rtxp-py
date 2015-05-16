@@ -50,11 +50,12 @@ class Signer(object):
 		seed = self.address.seed_from_human(secret)
 		root_key = dsa.get_root_key(seed)
 		public_key = dsa.get_public_key_from_root(root_key)
-		tx_json['SigningPubKey'] = public_key
+		tx_json['SigningPubKey'] = utils.to_hex(public_key)
 
 		tx_blob = self.serializer.serialize_json(tx_json)
-		signature = _sign_blob(tx_blob, root_key, True)
-		tx_json['TxnSignature'] = signature
+		signing_hash = _get_signing_hash(tx_blob, test)
+		signature = dsa.sign(signing_hash, root_key)
+		tx_json['TxnSignature'] = utils.to_hex(signature)
 
 		tx_blob = self.serializer.serialize_json(tx_json)
 		return utils.to_hex(tx_blob)

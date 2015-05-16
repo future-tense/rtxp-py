@@ -6,11 +6,11 @@ from rtxp.core import hashes
 from rtxp.core import utils
 
 
-def sign(signing_hash, root_key):
+def sign(signing_hash, root_key, **kw):
 	""" Signs hash with root_key. """
 
 	number = utils.bytes_to_int(signing_hash)
-	r, s = root_key.sign_number(number)
+	r, s = root_key.sign_number(number, **kw)
 	r, s = _get_canonical_signature(r, s)
 	return sigencode_der(r, s, None)
 
@@ -25,9 +25,12 @@ def get_root_key(seed):
 
 		i = 0
 		res = 0
-		while res < curves.SECP256k1.order:
+		while True:
 			res = from_bytes(hashes.sha512half(seed + to_bytes(i, 4)))
 			i += 1
+
+			if curves.SECP256k1.order >= res:
+				break
 
 		return res
 

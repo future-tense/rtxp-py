@@ -17,7 +17,7 @@ def _get_signing_hash(blob, test=False):
 
 
 def _sign_blob(tx_blob, seed, test=False):
-	signing_hash = _get_signing_hash(tx_blob)
+	signing_hash = _get_signing_hash(tx_blob, test)
 	return dsa.sign(signing_hash, seed)
 
 

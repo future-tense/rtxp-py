@@ -1,16 +1,15 @@
-stellar-py
+rtxp-py
 ==========
 
-Python client library for Stellar
+Python client library for RTXP networks
 
-[![PyPI version](https://badge.fury.io/py/stellar-py.svg)](http://badge.fury.io/py/stellar-py)
-
-Still a work in progress, but usable.
+Still a work in progress, but usable. At the moment there is support for Stellar v1, and Ripple. In the future, support for Radar, Tembusu, Jingtum, and other RTXP-based protocols might be added.
 
 # Example usage: sending a payment
 
 ```python
-import stellar
+from rtxp import ripple
+from rtxp import stellar
 ```
 
 ### Generating keys
